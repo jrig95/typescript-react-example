@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import AddToList from './components/AddToList';
+import List from "./components/List"
+
+export interface IState {
+  people: {
+    name: string
+    age: number
+    url: string
+    note?: string
+  }[]
+}
 
 function App() {
+
+  const [ people, setPeople ] = useState<IState["people"]>([{
+    name: "Lebron James",
+    url: "data:image/jpeg;base64,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",
+    age: 36,
+    note: "Allergic to staying on the same team"
+  }]);
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>People Invited to my Party</h1>
+      <List people={people}/>
+      <AddToList people={people} setPeople={setPeople}/>
     </div>
   );
 }
